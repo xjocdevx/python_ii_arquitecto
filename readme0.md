@@ -1,5 +1,5 @@
 ## 📘 POO en Python – Guía práctica
-# 1. Clases y objetos
+## 1. Clases y objetos
 
 Una clase es un molde. Un objeto es una instancia de ese molde.
 ```python
@@ -10,8 +10,8 @@ class Perro:
 mi_perro = Perro()   # crear un objeto
 print(type(mi_perro))  # <class '__main__.Perro'>
 ```
-# 2. Atributos
-Atributos de instancia
+## 2. Atributos
+### Atributos de instancia
 
 Pertenecen a cada objeto por separado. Se definen en __init__.
 ```python
@@ -24,7 +24,7 @@ class Gato:
 michi = Gato("Bigotes", 3)
 print(michi.nombre)  # Bigotes
 ```
-Atributos de clase
+### Atributos de clase
 
 Se comparten entre todas las instancias.
 ```python
@@ -39,8 +39,8 @@ print(moto.ruedas)   # 4
 Vehiculo.ruedas = 3  # cambia para todos
 print(coche.ruedas)  # 3
 ```
-# 3. Métodos
-Método de instancia
+## 3. Métodos
+### Método de instancia
 
 Recibe self y puede acceder/modificar atributos del objeto.
 ```python
@@ -52,7 +52,7 @@ class Calculadora:
 calc = Calculadora()
 print(calc.sumar(5, 3))  # 8
 ```
-Método de clase
+### Método de clase
 
 Recibe cls (la clase). Se define con @classmethod.
 ```python
@@ -66,7 +66,7 @@ class Persona:
 
 print(Persona.info_especie())  # Especie: Humano
 ```
-Método estático
+### Método estático
 
 No recibe self ni cls. Es como una función normal dentro de la clase. Se define con @staticmethod.
 ```python
@@ -78,7 +78,7 @@ class Matematicas:
 
 print(Matematicas.es_par(7))  # False
 ```
-# 4. Encapsulamiento
+## 4. Encapsulamiento
 
 En Python no hay modificadores private / protected estrictos, pero usamos convenciones:
 
@@ -86,7 +86,7 @@ En Python no hay modificadores private / protected estrictos, pero usamos conven
 
     __atributo → "private" (name mangling: _Clase__atributo)
 
-Uso de properties (getters/setters al estilo Python)
+### Uso de properties (getters/setters al estilo Python)
 ```python
 
 class CuentaBancaria:
@@ -111,7 +111,7 @@ cuenta.saldo = 500     # usa setter
 print(cuenta.saldo)    # 500
 #cuenta.saldo = -50   # Lanza ValueError
 ```
-# 5. Herencia
+## 5. Herencia
 
 Una clase hereda atributos y métodos de otra.
 ```python
@@ -136,7 +136,7 @@ print(firulais.nombre)      # Firulais (heredado)
 print(firulais.hacer_sonido())  # ¡Guau!
 ```
 
-super() – llamar al método de la clase padre
+### super() – llamar al método de la clase padre
 ```python
 
 class Mascota(Animal):
@@ -147,7 +147,7 @@ class Mascota(Animal):
 m = Mascota("Luna", "Carlos")
 print(m.nombre, m.dueno)   # Luna Carlos
 ```
-Herencia múltiple y MRO (Method Resolution Order)
+### Herencia múltiple y MRO (Method Resolution Order)
 ```python
 
 class A:
@@ -165,7 +165,7 @@ obj = C()
 print(obj.saludar())          # Hola desde A
 print(C.__mro__)              # Muestra orden: (C, A, B, object)
 ```
-# 6. Polimorfismo
+## 6. Polimorfismo
 
 Mismo nombre de método, comportamiento diferente según el objeto.
 ```python
@@ -186,7 +186,7 @@ v = Vaca()
 hacer_hablar(p)   # Cuac
 hacer_hablar(v)   # Muu
 ```
-# 7. Clases abstractas (ABC)
+## 7. Clases abstractas (ABC)
 
 Definen métodos que obligatoriamente deben implementar las clases hijas.
 ```python
@@ -209,7 +209,7 @@ class Circulo(Figura):
 circulo = Circulo(5)
 print(circulo.area())    # 78.54
 ```
-# 8. Ejemplo completo integrador
+## 8. Ejemplo completo integrador
 ```python
 
 class Empleado:
