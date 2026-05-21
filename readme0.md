@@ -2,19 +2,19 @@
 # 1. Clases y objetos
 
 Una clase es un molde. Un objeto es una instancia de ese molde.
-python
+```python
 
 class Perro:
     pass  # clase vacía
 
 mi_perro = Perro()   # crear un objeto
 print(type(mi_perro))  # <class '__main__.Perro'>
-
+```
 # 2. Atributos
 Atributos de instancia
 
 Pertenecen a cada objeto por separado. Se definen en __init__.
-python
+```python
 
 class Gato:
     def __init__(self, nombre, edad):
@@ -23,11 +23,11 @@ class Gato:
 
 michi = Gato("Bigotes", 3)
 print(michi.nombre)  # Bigotes
-
+```
 Atributos de clase
 
 Se comparten entre todas las instancias.
-python
+```python
 
 class Vehiculo:
     ruedas = 4   # atributo de clase
@@ -38,12 +38,12 @@ print(coche.ruedas)  # 4
 print(moto.ruedas)   # 4
 Vehiculo.ruedas = 3  # cambia para todos
 print(coche.ruedas)  # 3
-
+```
 # 3. Métodos
 Método de instancia
 
 Recibe self y puede acceder/modificar atributos del objeto.
-python
+```python
 
 class Calculadora:
     def sumar(self, a, b):
@@ -51,11 +51,11 @@ class Calculadora:
 
 calc = Calculadora()
 print(calc.sumar(5, 3))  # 8
-
+```
 Método de clase
 
 Recibe cls (la clase). Se define con @classmethod.
-python
+```python
 
 class Persona:
     especie = "Humano"
@@ -65,11 +65,11 @@ class Persona:
         return f"Especie: {cls.especie}"
 
 print(Persona.info_especie())  # Especie: Humano
-
+```
 Método estático
 
 No recibe self ni cls. Es como una función normal dentro de la clase. Se define con @staticmethod.
-python
+```python
 
 class Matematicas:
     @staticmethod
@@ -77,7 +77,7 @@ class Matematicas:
         return numero % 2 == 0
 
 print(Matematicas.es_par(7))  # False
-
+```
 # 4. Encapsulamiento
 
 En Python no hay modificadores private / protected estrictos, pero usamos convenciones:
@@ -87,7 +87,7 @@ En Python no hay modificadores private / protected estrictos, pero usamos conven
     __atributo → "private" (name mangling: _Clase__atributo)
 
 Uso de properties (getters/setters al estilo Python)
-python
+```python
 
 class CuentaBancaria:
     def __init__(self, saldo):
@@ -109,12 +109,12 @@ cuenta = CuentaBancaria(1000)
 print(cuenta.saldo)    # 1000 (parece atributo, pero ejecuta getter)
 cuenta.saldo = 500     # usa setter
 print(cuenta.saldo)    # 500
-# cuenta.saldo = -50   # Lanza ValueError
-
+#cuenta.saldo = -50   # Lanza ValueError
+```
 # 5. Herencia
 
 Una clase hereda atributos y métodos de otra.
-python
+```python
 
 class Animal:
     def __init__(self, nombre):
@@ -134,9 +134,10 @@ class Gato(Animal):
 firulais = Perro("Firulais")
 print(firulais.nombre)      # Firulais (heredado)
 print(firulais.hacer_sonido())  # ¡Guau!
+```
 
 super() – llamar al método de la clase padre
-python
+```python
 
 class Mascota(Animal):
     def __init__(self, nombre, dueno):
@@ -145,9 +146,9 @@ class Mascota(Animal):
 
 m = Mascota("Luna", "Carlos")
 print(m.nombre, m.dueno)   # Luna Carlos
-
+```
 Herencia múltiple y MRO (Method Resolution Order)
-python
+```python
 
 class A:
     def saludar(self):
@@ -163,11 +164,11 @@ class C(A, B):   # hereda primero de A, luego de B
 obj = C()
 print(obj.saludar())          # Hola desde A
 print(C.__mro__)              # Muestra orden: (C, A, B, object)
-
+```
 # 6. Polimorfismo
 
 Mismo nombre de método, comportamiento diferente según el objeto.
-python
+```python
 
 class Pato:
     def hablar(self):
@@ -184,11 +185,11 @@ p = Pato()
 v = Vaca()
 hacer_hablar(p)   # Cuac
 hacer_hablar(v)   # Muu
-
+```
 # 7. Clases abstractas (ABC)
 
 Definen métodos que obligatoriamente deben implementar las clases hijas.
-python
+```python
 
 from abc import ABC, abstractmethod
 
@@ -207,9 +208,9 @@ class Circulo(Figura):
 #fig = Figura()        # Error: no se puede instanciar clase abstracta
 circulo = Circulo(5)
 print(circulo.area())    # 78.54
-
+```
 # 8. Ejemplo completo integrador
-python
+```python
 
 class Empleado:
     def __init__(self, nombre, salario_base):
@@ -248,3 +249,4 @@ empleados = [
 
 for emp in empleados:
     print(f"{emp.nombre}: ${emp.calcular_salario()}")
+```
