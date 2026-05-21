@@ -1,6 +1,6 @@
-MÓDULO 1 — Programación Orientada a Objetos (POO)
+# MÓDULO 1 — Programación Orientada a Objetos (POO)
 Ejercicio 1 — Clase Persona
-
+```python
 class Persona:
     def __init__(self, nombre, edad):
         self.nombre = nombre
@@ -9,18 +9,18 @@ class Persona:
 persona = Persona("Carlos", 25)
 print(persona.nombre)
 print(persona.edad)
-
+```
 Ejercicio 2 — Clase Animal
-
+```python
 class Animal:
     def hacer_sonido(self):
         print("Sonido del animal")
 
 animal = Animal()
 animal.hacer_sonido()
-
+```
 Ejercicio 3 — Clase Auto
-
+```python
 class Auto:
     def __init__(self, marca, modelo):
         self.marca = marca
@@ -31,16 +31,16 @@ class Auto:
 
 auto = Auto("Toyota", "Corolla")
 auto.mostrar()
-
+```
 Ejercicio 4 — Clase Libro
-
+```python
 class Libro:
     def __init__(self, titulo):
         self.titulo = titulo
 
 libro = Libro("Python Básico")
 print(libro.titulo)
-
+```
 Ejercicio 5 — Clase Rectangulo
 
 class Rectangulo:
@@ -223,7 +223,7 @@ inv = Inventario()
 inv.agregar("Monitor")
 print(inv.items)
 
-MÓDULO 2 — SQL y Pydantic
+# MÓDULO 2 — SQL y Pydantic
 
 Ejercicio 1 — Crear Base de Datos
 
