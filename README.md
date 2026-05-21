@@ -1,2 +1,474 @@
-# python_ii_arquitecto
-Python II: Arquitecto de Soluciones
+MÓDULO 1 — Programación Orientada a Objetos (POO)
+Ejercicio 1 — Clase Persona
+
+class Persona:
+    def __init__(self, nombre, edad):
+        self.nombre = nombre
+        self.edad = edad
+
+persona = Persona("Carlos", 25)
+print(persona.nombre)
+print(persona.edad)
+
+Ejercicio 2 — Clase Animal
+
+class Animal:
+    def hacer_sonido(self):
+        print("Sonido del animal")
+
+animal = Animal()
+animal.hacer_sonido()
+
+Ejercicio 3 — Clase Auto
+
+class Auto:
+    def __init__(self, marca, modelo):
+        self.marca = marca
+        self.modelo = modelo
+
+    def mostrar(self):
+        print(self.marca, self.modelo)
+
+auto = Auto("Toyota", "Corolla")
+auto.mostrar()
+
+Ejercicio 4 — Clase Libro
+
+class Libro:
+    def __init__(self, titulo):
+        self.titulo = titulo
+
+libro = Libro("Python Básico")
+print(libro.titulo)
+
+Ejercicio 5 — Clase Rectangulo
+
+class Rectangulo:
+    def __init__(self, base, altura):
+        self.base = base
+        self.altura = altura
+
+    def area(self):
+        return self.base * self.altura
+
+r = Rectangulo(5, 3)
+print(r.area())
+
+Ejercicio 6 — Clase Cuenta
+
+class Cuenta:
+    def __init__(self, saldo):
+        self.saldo = saldo
+
+    def depositar(self, monto):
+        self.saldo += monto
+
+cuenta = Cuenta(100)
+cuenta.depositar(50)
+print(cuenta.saldo)
+
+Ejercicio 7 — Clase Producto
+
+class Producto:
+    def __init__(self, nombre, precio):
+        self.nombre = nombre
+        self.precio = precio
+
+producto = Producto("Mouse", 80)
+print(producto.nombre)
+print(producto.precio)
+
+Ejercicio 8 — Clase Estudiante
+
+class Estudiante:
+    def __init__(self, nombre, nota):
+        self.nombre = nombre
+        self.nota = nota
+
+    def aprobar(self):
+        return self.nota >= 51
+
+est = Estudiante("Ana", 70)
+print(est.aprobar())
+
+Ejercicio 9 — Herencia Vehículo
+
+class Vehiculo:
+    def mover(self):
+        print("El vehículo se mueve")
+
+class Moto(Vehiculo):
+    pass
+
+m = Moto()
+m.mover()
+
+Ejercicio 10 — Clase Empleado
+
+class Empleado:
+    def __init__(self, nombre, salario):
+        self.nombre = nombre
+        self.salario = salario
+
+    def bono(self):
+        return self.salario * 0.10
+
+emp = Empleado("Luis", 3000)
+print(emp.bono())
+
+Ejercicio 11 — Clase Calculadora
+
+class Calculadora:
+    def sumar(self, a, b):
+        return a + b
+
+calc = Calculadora()
+print(calc.sumar(5, 3))
+
+Ejercicio 12 — Clase Celular
+
+class Celular:
+    def llamar(self):
+        print("Llamando...")
+
+c = Celular()
+c.llamar()
+
+Ejercicio 13 — Clase Película
+
+class Pelicula:
+    def __init__(self, nombre, duracion):
+        self.nombre = nombre
+        self.duracion = duracion
+
+p = Pelicula("Matrix", 120)
+print(p.nombre)
+
+Ejercicio 14 — Clase Profesor
+
+class Profesor:
+    def __init__(self, nombre, materia):
+        self.nombre = nombre
+        self.materia = materia
+
+prof = Profesor("Mario", "Matemática")
+print(prof.materia)
+
+Ejercicio 15 — Clase Tienda
+
+class Tienda:
+    def __init__(self):
+        self.productos = []
+
+    def agregar(self, producto):
+        self.productos.append(producto)
+
+store = Tienda()
+store.agregar("Teclado")
+print(store.productos)
+
+Ejercicio 16 — Clase Factura
+
+class Factura:
+    def __init__(self, monto):
+        self.monto = monto
+
+    def iva(self):
+        return self.monto * 0.13
+
+f = Factura(100)
+print(f.iva())
+
+Ejercicio 17 — Clase Banco
+
+class Banco:
+    def __init__(self):
+        self.clientes = []
+
+    def agregar_cliente(self, nombre):
+        self.clientes.append(nombre)
+
+banco = Banco()
+banco.agregar_cliente("Carlos")
+print(banco.clientes)
+
+Ejercicio 18 — Encapsulamiento
+
+class Usuario:
+    def __init__(self):
+        self.__password = "1234"
+
+u = Usuario()
+print("Password protegida")
+
+Ejercicio 19 — Clase Computadora
+
+class Computadora:
+    def __init__(self, ram):
+        self.ram = ram
+
+pc = Computadora("8GB")
+print(pc.ram)
+
+Ejercicio 20 — Mini Inventario
+
+class Inventario:
+    def __init__(self):
+        self.items = []
+
+    def agregar(self, item):
+        self.items.append(item)
+
+inv = Inventario()
+inv.agregar("Monitor")
+print(inv.items)
+
+MÓDULO 2 — SQL y Pydantic
+
+Ejercicio 1 — Crear Base de Datos
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+print("Base creada")
+conexion.close()
+
+Ejercicio 2 — Crear Tabla
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS usuarios(
+    id INTEGER PRIMARY KEY,
+    nombre TEXT
+)
+""")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 3 — Insertar Datos
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("INSERT INTO usuarios(nombre) VALUES(?)", ("Carlos",))
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 4 — Listar Usuarios
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("SELECT * FROM usuarios")
+usuarios = cursor.fetchall()
+
+for u in usuarios:
+    print(u)
+
+conexion.close()
+
+Ejercicio 5 — Buscar Usuario
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("SELECT * FROM usuarios WHERE id=1")
+print(cursor.fetchone())
+
+conexion.close()
+
+Ejercicio 6 — Actualizar Usuario
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("UPDATE usuarios SET nombre='Ana' WHERE id=1")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 7 — Eliminar Usuario
+
+import sqlite3
+
+conexion = sqlite3.connect("empresa.db")
+cursor = conexion.cursor()
+
+cursor.execute("DELETE FROM usuarios WHERE id=1")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 8 — Modelo Pydantic
+
+from pydantic import BaseModel
+
+class Usuario(BaseModel):
+    nombre: str
+    edad: int
+
+u = Usuario(nombre="Luis", edad=20)
+
+print(u)
+
+Ejercicio 9 — Validar Email
+
+from pydantic import BaseModel, EmailStr
+
+class Cliente(BaseModel):
+    email: EmailStr
+
+c = Cliente(email="correo@gmail.com")
+print(c)
+
+Ejercicio 10 — Validar Edad
+
+from pydantic import BaseModel
+
+class Persona(BaseModel):
+    edad: int
+
+p = Persona(edad=25)
+print(p)
+
+Ejercicio 11 — Guardar Producto
+
+import sqlite3
+
+conexion = sqlite3.connect("tienda.db")
+cursor = conexion.cursor()
+
+cursor.execute("CREATE TABLE IF NOT EXISTS productos(nombre TEXT)")
+cursor.execute("INSERT INTO productos VALUES('Mouse')")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 12 — Leer Productos
+
+import sqlite3
+
+conexion = sqlite3.connect("tienda.db")
+cursor = conexion.cursor()
+
+cursor.execute("SELECT * FROM productos")
+print(cursor.fetchall())
+
+conexion.close()
+
+Ejercicio 13 — Crear Tabla Ventas
+
+import sqlite3
+
+conexion = sqlite3.connect("ventas.db")
+cursor = conexion.cursor()
+
+cursor.execute("CREATE TABLE IF NOT EXISTS ventas(total REAL)")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 14 — Insertar Venta
+
+import sqlite3
+
+conexion = sqlite3.connect("ventas.db")
+cursor = conexion.cursor()
+
+cursor.execute("INSERT INTO ventas VALUES(150)")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 15 — Exportar JSON
+
+import json
+
+persona = {
+    "nombre": "Carlos",
+    "edad": 25
+}
+
+with open("persona.json", "w") as archivo:
+    json.dump(persona, archivo)
+
+Ejercicio 16 — Leer JSON
+
+import json
+
+with open("persona.json", "r") as archivo:
+    datos = json.load(archivo)
+
+print(datos)
+
+Ejercicio 17 — CRUD Básico
+
+print("1. Crear")
+print("2. Leer")
+print("3. Salir")
+
+Ejercicio 18 — Tabla Clientes
+
+import sqlite3
+
+conexion = sqlite3.connect("clientes.db")
+cursor = conexion.cursor()
+
+cursor.execute("CREATE TABLE IF NOT EXISTS clientes(nombre TEXT)")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 19 — Insertar Cliente
+
+import sqlite3
+
+conexion = sqlite3.connect("clientes.db")
+cursor = conexion.cursor()
+
+cursor.execute("INSERT INTO clientes VALUES('Maria')")
+
+conexion.commit()
+conexion.close()
+
+Ejercicio 20 — Mostrar Clientes
+
+import sqlite3
+
+conexion = sqlite3.connect("clientes.db")
+cursor = conexion.cursor()
+
+cursor.execute("SELECT * FROM clientes")
+print(cursor.fetchall())
+
+conexion.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
