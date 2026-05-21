@@ -1,4 +1,4 @@
-### 📘 POO en Python – Guía práctica
+## 📘 POO en Python – Guía práctica
 # 1. Clases y objetos
 
 Una clase es un molde. Un objeto es una instancia de ese molde.
