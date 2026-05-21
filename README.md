@@ -42,7 +42,7 @@ libro = Libro("Python Básico")
 print(libro.titulo)
 ```
 Ejercicio 5 — Clase Rectangulo
-
+```python
 class Rectangulo:
     def __init__(self, base, altura):
         self.base = base
@@ -53,9 +53,9 @@ class Rectangulo:
 
 r = Rectangulo(5, 3)
 print(r.area())
-
+```
 Ejercicio 6 — Clase Cuenta
-
+```python
 class Cuenta:
     def __init__(self, saldo):
         self.saldo = saldo
@@ -66,9 +66,9 @@ class Cuenta:
 cuenta = Cuenta(100)
 cuenta.depositar(50)
 print(cuenta.saldo)
-
+```
 Ejercicio 7 — Clase Producto
-
+```python
 class Producto:
     def __init__(self, nombre, precio):
         self.nombre = nombre
@@ -77,9 +77,9 @@ class Producto:
 producto = Producto("Mouse", 80)
 print(producto.nombre)
 print(producto.precio)
-
+```
 Ejercicio 8 — Clase Estudiante
-
+```python
 class Estudiante:
     def __init__(self, nombre, nota):
         self.nombre = nombre
@@ -90,9 +90,9 @@ class Estudiante:
 
 est = Estudiante("Ana", 70)
 print(est.aprobar())
-
+```
 Ejercicio 9 — Herencia Vehículo
-
+```python
 class Vehiculo:
     def mover(self):
         print("El vehículo se mueve")
@@ -102,9 +102,9 @@ class Moto(Vehiculo):
 
 m = Moto()
 m.mover()
-
+```
 Ejercicio 10 — Clase Empleado
-
+```python
 class Empleado:
     def __init__(self, nombre, salario):
         self.nombre = nombre
@@ -115,27 +115,27 @@ class Empleado:
 
 emp = Empleado("Luis", 3000)
 print(emp.bono())
-
+```
 Ejercicio 11 — Clase Calculadora
-
+```python
 class Calculadora:
     def sumar(self, a, b):
         return a + b
 
 calc = Calculadora()
 print(calc.sumar(5, 3))
-
+```
 Ejercicio 12 — Clase Celular
-
+```python
 class Celular:
     def llamar(self):
         print("Llamando...")
 
 c = Celular()
 c.llamar()
-
+```
 Ejercicio 13 — Clase Película
-
+```python
 class Pelicula:
     def __init__(self, nombre, duracion):
         self.nombre = nombre
@@ -143,9 +143,9 @@ class Pelicula:
 
 p = Pelicula("Matrix", 120)
 print(p.nombre)
-
+```
 Ejercicio 14 — Clase Profesor
-
+```python
 class Profesor:
     def __init__(self, nombre, materia):
         self.nombre = nombre
@@ -153,9 +153,9 @@ class Profesor:
 
 prof = Profesor("Mario", "Matemática")
 print(prof.materia)
-
+```
 Ejercicio 15 — Clase Tienda
-
+```python
 class Tienda:
     def __init__(self):
         self.productos = []
@@ -166,9 +166,9 @@ class Tienda:
 store = Tienda()
 store.agregar("Teclado")
 print(store.productos)
-
+```
 Ejercicio 16 — Clase Factura
-
+```python
 class Factura:
     def __init__(self, monto):
         self.monto = monto
@@ -178,9 +178,9 @@ class Factura:
 
 f = Factura(100)
 print(f.iva())
-
+```
 Ejercicio 17 — Clase Banco
-
+```python
 class Banco:
     def __init__(self):
         self.clientes = []
@@ -191,27 +191,27 @@ class Banco:
 banco = Banco()
 banco.agregar_cliente("Carlos")
 print(banco.clientes)
-
+```
 Ejercicio 18 — Encapsulamiento
-
+```python
 class Usuario:
     def __init__(self):
         self.__password = "1234"
 
 u = Usuario()
 print("Password protegida")
-
+```
 Ejercicio 19 — Clase Computadora
-
+```python
 class Computadora:
     def __init__(self, ram):
         self.ram = ram
 
 pc = Computadora("8GB")
 print(pc.ram)
-
+```
 Ejercicio 20 — Mini Inventario
-
+```python
 class Inventario:
     def __init__(self):
         self.items = []
@@ -226,15 +226,15 @@ print(inv.items)
 # MÓDULO 2 — SQL y Pydantic
 
 Ejercicio 1 — Crear Base de Datos
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
 print("Base creada")
 conexion.close()
-
+```
 Ejercicio 2 — Crear Tabla
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -249,9 +249,9 @@ CREATE TABLE IF NOT EXISTS usuarios(
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 3 — Insertar Datos
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -261,9 +261,9 @@ cursor.execute("INSERT INTO usuarios(nombre) VALUES(?)", ("Carlos",))
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 4 — Listar Usuarios
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -276,9 +276,9 @@ for u in usuarios:
     print(u)
 
 conexion.close()
-
+```
 Ejercicio 5 — Buscar Usuario
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -288,9 +288,9 @@ cursor.execute("SELECT * FROM usuarios WHERE id=1")
 print(cursor.fetchone())
 
 conexion.close()
-
+```
 Ejercicio 6 — Actualizar Usuario
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -300,9 +300,9 @@ cursor.execute("UPDATE usuarios SET nombre='Ana' WHERE id=1")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 7 — Eliminar Usuario
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("empresa.db")
@@ -312,9 +312,9 @@ cursor.execute("DELETE FROM usuarios WHERE id=1")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 8 — Modelo Pydantic
-
+```python
 from pydantic import BaseModel
 
 class Usuario(BaseModel):
@@ -334,9 +334,9 @@ class Cliente(BaseModel):
 
 c = Cliente(email="correo@gmail.com")
 print(c)
-
+```
 Ejercicio 10 — Validar Edad
-
+```python
 from pydantic import BaseModel
 
 class Persona(BaseModel):
@@ -344,9 +344,9 @@ class Persona(BaseModel):
 
 p = Persona(edad=25)
 print(p)
-
+```
 Ejercicio 11 — Guardar Producto
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("tienda.db")
@@ -357,9 +357,9 @@ cursor.execute("INSERT INTO productos VALUES('Mouse')")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 12 — Leer Productos
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("tienda.db")
@@ -369,9 +369,9 @@ cursor.execute("SELECT * FROM productos")
 print(cursor.fetchall())
 
 conexion.close()
-
+```
 Ejercicio 13 — Crear Tabla Ventas
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("ventas.db")
@@ -381,9 +381,9 @@ cursor.execute("CREATE TABLE IF NOT EXISTS ventas(total REAL)")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 14 — Insertar Venta
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("ventas.db")
@@ -393,9 +393,9 @@ cursor.execute("INSERT INTO ventas VALUES(150)")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 15 — Exportar JSON
-
+```python
 import json
 
 persona = {
@@ -405,24 +405,24 @@ persona = {
 
 with open("persona.json", "w") as archivo:
     json.dump(persona, archivo)
-
+```
 Ejercicio 16 — Leer JSON
-
+```python
 import json
 
 with open("persona.json", "r") as archivo:
     datos = json.load(archivo)
 
 print(datos)
-
+```
 Ejercicio 17 — CRUD Básico
-
+```python
 print("1. Crear")
 print("2. Leer")
 print("3. Salir")
-
+```
 Ejercicio 18 — Tabla Clientes
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("clientes.db")
@@ -432,9 +432,9 @@ cursor.execute("CREATE TABLE IF NOT EXISTS clientes(nombre TEXT)")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 19 — Insertar Cliente
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("clientes.db")
@@ -444,9 +444,9 @@ cursor.execute("INSERT INTO clientes VALUES('Maria')")
 
 conexion.commit()
 conexion.close()
-
+```
 Ejercicio 20 — Mostrar Clientes
-
+```python
 import sqlite3
 
 conexion = sqlite3.connect("clientes.db")
