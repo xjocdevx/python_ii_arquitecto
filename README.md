@@ -222,7 +222,7 @@ class Inventario:
 inv = Inventario()
 inv.agregar("Monitor")
 print(inv.items)
-
+```
 # MÓDULO 2 — SQL y Pydantic
 
 Ejercicio 1 — Crear Base de Datos
