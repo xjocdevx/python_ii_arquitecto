@@ -456,7 +456,92 @@ cursor.execute("SELECT * FROM clientes")
 print(cursor.fetchall())
 
 conexion.close()
+```
+### 2. MySQL
+Qué es: Un sistema gestor de bases de datos relacional más robusto y escalable que SQLite.
 
+Características:
+
+Requiere un servidor (local o remoto).
+
+Soporta múltiples usuarios y conexiones simultáneas.
+
+Ideal para aplicaciones empresariales y web.
+
+Uso en Python:
+
+Se maneja con librerías como mysql-connector-python o PyMySQL.
+
+Ejemplo:
+
+```python
+import mysql.connector
+conexion = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="1234",
+    database="empresa"
+)
+cursor = conexion.cursor()
+cursor.execute("SELECT * FROM empleados")
+for fila in cursor:
+    print(fila)
+conexion.close()
+```
+### 📌 3. CRUD desde Python
+CRUD significa Create, Read, Update, Delete, las operaciones básicas sobre datos.
+
+Create (Insertar):
+
+```python
+cursor.execute("INSERT INTO empleados (nombre) VALUES ('Carlos')")
+conexion.commit()
+```
+Read (Leer):
+
+```python
+cursor.execute("SELECT * FROM empleados")
+print(cursor.fetchall())
+```
+Update (Actualizar):
+
+```python
+cursor.execute("UPDATE empleados SET nombre='Ana' WHERE id=1")
+conexion.commit()
+```
+Delete (Eliminar):
+
+```python
+cursor.execute("DELETE FROM empleados WHERE id=1")
+conexion.commit()
+```
+
+### 📌 4. Validación de datos con Pydantic
+Qué es: Una librería de Python que permite validar y estructurar datos de manera sencilla usando modelos.
+
+Características:
+
+Garantiza que los datos tengan el tipo correcto.
+
+Útil en aplicaciones que reciben datos externos (APIs, formularios).
+
+Ejemplo:
+
+```python
+from pydantic import BaseModel
+
+class Empleado(BaseModel):
+    nombre: str
+    edad: int
+
+e = Empleado(nombre="Carlos", edad=25)
+print(e.dict())
+```
+Validación automática:
+
+```python
+Empleado(nombre="Ana", edad="25")  # Error, porque edad no es int
+```
 
 
 
