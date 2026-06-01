@@ -12,10 +12,10 @@ pip install mysql-connector-python
 
  * Asegúrate de tener MySQL instalado y corriendo
  * Modifica el archivo config.py con tus credenciales
-```python
+
 
 ### Archivo de configuración compartido: config.py
-
+```python
 """
 config.py - Configuración central para todos los ejercicios
 ¡CAMBIAR ESTOS VALORES SEGÚN TU CONFIGURACIÓN DE MYSQL!
