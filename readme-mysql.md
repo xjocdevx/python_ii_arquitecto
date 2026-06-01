@@ -1,4 +1,20 @@
-# Archivo de configuración compartido: config.py
+### 📄 Archivo README.md
+```bash 
+# Ejercicios CRUD con MySQL y Python
+
+## Requisitos previos
+
+1. **Instalar MySQL Connector:**
+
+pip install mysql-connector-python
+```
+### 2.Configurar MySQL:
+
+ * Asegúrate de tener MySQL instalado y corriendo
+ * Modifica el archivo config.py con tus credenciales
+```
+
+### Archivo de configuración compartido: config.py
 ```python
 """
 config.py - Configuración central para todos los ejercicios
@@ -24,7 +40,7 @@ def conectar():
         print(f"❌ Error de conexión: {e}")
         return None
 ```
-📄 Archivo 00: 00_configuracion_inicial.py
+### 📄 Archivo 00: 00_configuracion_inicial.py
 ```python
 """
 EJERCICIO 0: CONFIGURACIÓN INICIAL
@@ -98,7 +114,7 @@ if __name__ == "__main__":
     else:
         print("Configuración cancelada.")
 ```
-# 📄 Archivo 01: 01_insertar_un_estudiante.py
+### 📄 Archivo 01: 01_insertar_un_estudiante.py
 ```python
 """
 EJERCICIO 1: INSERTAR UN ESTUDIANTE
