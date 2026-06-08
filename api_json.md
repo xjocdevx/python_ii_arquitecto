@@ -39,7 +39,7 @@ Consumir API de cotización del dólar (por ejemplo, dolarapi.com o exchangerate
 
 Mostrar valor compra/venta con reintentos automáticos.
 # 📁 Estructura de archivos
-text
+```bach
 api_mysql_exercises/
 │
 ├── config.py                 # Configuración común (conexión DB)
@@ -63,6 +63,7 @@ api_mysql_exercises/
 ├── 18_webhook_simulado.py
 ├── 19_dashboard_metricas.py
 └── 20_proyecto_final_ventas.py
+```
 ### 🔧 Archivo de configuración común
 config.py
 ```python
