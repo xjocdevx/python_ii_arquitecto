@@ -1,3 +1,24 @@
+### LOGS
+```python
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+
+def function_whitch_logs(x: int, y: int) -> float:
+    """ Divide x por y!"""
+    try:
+        result=x/y
+    except ZeroDivisionError:
+            logging.error("Se detecto una division por cero", exc_info=False )
+            return 0
+    else:
+        logging.info(f"retorna x={x} dividiendo con y={y}")
+        return result
+
+# print(function_whitch_logs(120, 2))
+print(function_whitch_logs(120, 0))
+```    
+
 ### 001_ejercicio_logs_archivo.py
 ```python
 """
