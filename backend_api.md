@@ -1,5 +1,5 @@
 📁 Estructura del proyecto
-text
+´´´bash
 fastapi_mysql_examples/
 │
 ├── config.py                 # Configuración de BD
@@ -31,6 +31,7 @@ fastapi_mysql_examples/
 │
 ├── requirements.txt
 └── .env
+´´´
 🔧 Configuración inicial
 requirements.txt
 txt
