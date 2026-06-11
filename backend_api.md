@@ -1,3 +1,14 @@
+Instalar dependencias
+```bach
+# Instalar todas las dependencias del archivo
+pip install -r requirements.txt
+
+# En sistemas Linux/Mac a veces necesitas pip3
+pip3 install -r requirements.txt
+
+# En Windows (PowerShell)
+python -m pip install -r requirements.txt
+```
 # 📁 Estructura del Backen - API REST
 ```bach
 fastapi_mysql_examples/
