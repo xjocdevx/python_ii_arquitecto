@@ -1,5 +1,5 @@
 ### 001_ejercicio_logs_archivo.py
-´´´python
+```python
 """
 Ejercicio 14: Logs profesionales con archivos .log
 Objetivo: Implementar logging sistemático en aplicaciones Python
@@ -303,9 +303,9 @@ if __name__ == "__main__":
        - Usar logger.exception() dentro de except
        - Incluye automáticamente el traceback
     """)
-´´´
+```
 ### 002_ejercicio_logs_archivo.py
-´´´python
+```python
 """
 Ejercicio 15: Rotación de logs
 Objetivo: Implementar rotación automática de archivos de log
@@ -625,9 +625,9 @@ if __name__ == "__main__":
         print(f"\n❌ Error: {e}")
     
     print("\n📝 Nota: Los logs generados se encuentran en el directorio 'logs/'")
-´´´
-### 004ejercicio_pytest_fixture.py
-´´´python
+```
+### 003ejercicio_pytest_fixture.py
+```python
 """
 Ejercicio 16: Pytest con fixtures
 Objetivo: Usar fixtures para compartir configuraciones y datos entre pruebas
@@ -920,4 +920,4 @@ if __name__ == "__main__":
     
     print("\n⚠️ Ejecuta el comando mencionado arriba para ver las pruebas en acción")
     print("   Las aserciones en este archivo se validan con pytest, no con ejecución directa")
-´´´
+```
