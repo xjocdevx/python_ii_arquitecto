@@ -1,4 +1,4 @@
-# 📁 Estructura del proyecto
+# 📁 Estructura del Backen - API REST
 ```bach
 fastapi_mysql_examples/
 │
@@ -45,7 +45,7 @@ passlib[bcrypt]==1.7.4
 python-multipart==0.0.6
 websockets==12.0
 ```
-.env
+### .env
 ```bach
 DB_HOST=localhost
 DB_USER=root
@@ -53,7 +53,7 @@ DB_PASSWORD=tu_password
 DB_NAME=api_exercises
 SECRET_KEY=mi_secreto_super_seguro
 ```
-config.py
+### config.py
 ```python
 import os
 from dotenv import load_dotenv
@@ -71,7 +71,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'mi_secreto_dev')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 ```
-database.py
+### database.py
 
 ```python
 import mysql.connector
@@ -205,9 +205,10 @@ class Token(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
-📝 Ejemplos (1-20)
+```
+### 📝 Ejemplos (1-20)
 ejemplos/01_hola_mundo.py
-python
+```python
 """
 Ejemplo 1: Hola Mundo con FastAPI
 FastAPI - Endpoint básico
@@ -291,8 +292,9 @@ def eliminar_producto(id: int):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/03_con_db.py
-python
+```
+### ejemplos/03_con_db.py
+```python
 """
 Ejemplo 3: Conexión a MySQL
 Endpoints que interactúan con base de datos
@@ -371,8 +373,9 @@ def get_usuario(id: int):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/04_modelos_pydantic.py
-python
+```
+### ejemplos/04_modelos_pydantic.py
+```python
 """
 Ejemplo 4: Uso de modelos Pydantic
 Validación automática de datos
@@ -450,8 +453,9 @@ def validar_email(email: EmailStr):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/05_path_params.py
-python
+```
+### ejemplos/05_path_params.py
+```python
 """
 Ejemplo 5: Parámetros de ruta (Path Parameters)
 Diferentes formas de capturar valores en la URL
@@ -510,8 +514,9 @@ def validar_codigo(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
+```
 ejemplos/06_query_params.py
-python
+```python
 """
 Ejemplo 6: Parámetros de consulta (Query Parameters)
 Filtros, paginación y opciones en la URL
@@ -597,8 +602,9 @@ def old_endpoint(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/07_body_request.py
-python
+```
+### ejemplos/07_body_request.py
+```python
 """
 Ejemplo 7: Request Body (JSON)
 Envío de datos complejos en POST/PUT
@@ -686,8 +692,9 @@ def actualizar_usuario(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/08_validaciones.py
-python
+```
+### ejemplos/08_validaciones.py
+```python
 """
 Ejemplo 8: Validaciones avanzadas
 Validaciones personalizadas y constraints
@@ -764,8 +771,9 @@ def crear_con_body(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/09_relaciones_join.py
-python
+```
+### ejemplos/09_relaciones_join.py
+```python
 """
 Ejemplo 9: Relaciones y JOINs en MySQL
 Obtener datos relacionados de múltiples tablas
@@ -940,8 +948,9 @@ def top_usuarios(limit: int = 10):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/10_paginacion.py
-python
+```
+### ejemplos/10_paginacion.py
+```python
 """
 Ejemplo 10: Paginación profesional
 Manejo de grandes volúmenes de datos
@@ -1100,8 +1109,9 @@ def get_productos_paginados(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
-ejemplos/11_filtros_avanzados.py
-python
+```
+### ejemplos/11_filtros_avanzados.py
+```python
 """
 Ejemplo 11: Filtros avanzados y búsqueda
 Múltiples criterios de búsqueda
@@ -1140,3 +1150,4 @@ def buscar_ventas(
     usuario_id: Optional[int] = Query(None, description="ID del usuario"),
     producto: Optional[str] = Query(None, description="Nombre del producto"),
     fecha_desde: Optional
+```
