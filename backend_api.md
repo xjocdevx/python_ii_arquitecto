@@ -1,5 +1,5 @@
-📁 Estructura del proyecto
-´´´bash
+# 📁 Estructura del proyecto
+```bach
 fastapi_mysql_examples/
 │
 ├── config.py                 # Configuración de BD
@@ -31,10 +31,10 @@ fastapi_mysql_examples/
 │
 ├── requirements.txt
 └── .env
-´´´
-🔧 Configuración inicial
+```
+### 🔧 Configuración inicial
 requirements.txt
-txt
+```bach
 fastapi==0.104.1
 uvicorn==0.24.0
 mysql-connector-python==8.1.0
@@ -44,15 +44,17 @@ python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 python-multipart==0.0.6
 websockets==12.0
+```
 .env
-env
+```bach
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=tu_password
 DB_NAME=api_exercises
 SECRET_KEY=mi_secreto_super_seguro
+```
 config.py
-python
+```python
 import os
 from dotenv import load_dotenv
 
@@ -68,8 +70,10 @@ DB_CONFIG = {
 SECRET_KEY = os.getenv('SECRET_KEY', 'mi_secreto_dev')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+```
 database.py
-python
+
+```python
 import mysql.connector
 from mysql.connector import Error
 from config import DB_CONFIG
@@ -129,8 +133,9 @@ def init_database():
     cursor.close()
     conn.close()
     print("✅ Base de datos inicializada")
-models.py
-python
+```
+### models.py
+```python
 from pydantic import BaseModel, Field, validator
 from typing import Optional
 from datetime import datetime
@@ -223,8 +228,9 @@ def health_check():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
-ejemplos/02_crud_basico.py
-python
+```
+### ejemplos/02_crud_basico.py
+```python
 """
 Ejemplo 2: CRUD básico en memoria
 Endpoints: GET, POST, PUT, DELETE
