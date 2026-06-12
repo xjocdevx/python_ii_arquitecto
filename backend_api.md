@@ -1139,6 +1139,44 @@ class PaginatedResponse(BaseModel):
     next_page: Optional[int]
     prev_page: Optional[int]
 
+@app.on_event("startup")
+def init_pagination_data():
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Crear tabla productos si no existe
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS productos (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(100),
+            descripcion TEXT,
+            precio DECIMAL(10,2),
+            stock INT
+        )
+    """)
+    
+    # Generar 100 productos de prueba si está vacío
+    cursor.execute("SELECT COUNT(*) FROM productos")
+    if cursor.fetchone()[0] == 0:
+        productos_demo = []
+        for i in range(1, 101):
+            productos_demo.append((
+                f"Producto {i}",
+                f"Descripción del producto número {i}",
+                10.00 + (i * 1.5),
+                i * 10
+            ))
+        
+        cursor.executemany(
+            "INSERT INTO productos (nombre, descripcion, precio, stock) VALUES (%s, %s, %s, %s)",
+            productos_demo
+        )
+        conn.commit()
+        print("✅ 100 productos generados para pruebas de paginación")
+    
+    cursor.close()
+    conn.close()
+
 def paginate_query(cursor, base_query: str, count_query: str, params: List, page: int, per_page: int):
     """Helper para paginar queries SQL"""
     offset = (page - 1) * per_page
