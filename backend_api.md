@@ -264,11 +264,46 @@ from config import DB_CONFIG
 
 app = FastAPI()
 
-
 def get_db():
     conn = mysql.connector.connect(**DB_CONFIG)
     return conn
-
+@app.on_event("startup")
+def init_database_and_seed():
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Crear tabla si no existe
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS productos (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(100) NOT NULL,
+            precio DECIMAL(10,2) NOT NULL,
+            stock INT DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    # Verificar si hay datos, si no, insertar datos de prueba
+    cursor.execute("SELECT COUNT(*) FROM productos")
+    count = cursor.fetchone()[0]
+    
+    if count == 0:
+        datos_prueba = [
+            ("Laptop Gaming", 1200.00, 10),
+            ("Mouse Inalámbrico", 25.99, 50),
+            ("Teclado Mecánico", 89.99, 30),
+            ("Monitor 24''", 199.99, 15),
+            ("Disco SSD 1TB", 129.99, 25)
+        ]
+        cursor.executemany(
+            "INSERT INTO productos (nombre, precio, stock) VALUES (%s, %s, %s)",
+            datos_prueba
+        )
+        conn.commit()
+        print("✅ Datos de prueba insertados en productos")
+    
+    cursor.close()
+    conn.close()
 
 @app.get("/productos")
 def listar_productos():
