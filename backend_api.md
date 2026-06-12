@@ -1214,4 +1214,178 @@ def buscar_ventas(
     usuario_id: Optional[int] = Query(None, description="ID del usuario"),
     producto: Optional[str] = Query(None, description="Nombre del producto"),
     fecha_desde: Optional
+fecha_desde: Optional[date] = Query(None, description="Fecha inicio"),
+    fecha_hasta: Optional[date] = Query(None, description="Fecha fin"),
+    total_min: Optional[float] = Query(None, ge=0, description="Total mínimo"),
+    total_max: Optional[float] = Query(None, ge=0, description="Total máximo"),
+    cantidad_min: Optional[int] = Query(None, ge=1, description="Cantidad mínima"),
+    limit: int = Query(50, ge=1, le=200, description="Límite de resultados")
+):
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    
+    query = """
+        SELECT v.*, u.nombre as usuario_nombre
+        FROM ventas v
+        LEFT JOIN usuarios u ON v.usuario_id = u.id
+        WHERE 1=1
+    """
+    params = []
+    
+    if usuario_id:
+        query += " AND v.usuario_id = %s"
+        params.append(usuario_id)
+    
+    if producto:
+        query += " AND v.producto LIKE %s"
+        params.append(f"%{producto}%")
+    
+    if fecha_desde:
+        query += " AND v.fecha >= %s"
+        params.append(fecha_desde)
+    
+    if fecha_hasta:
+        query += " AND v.fecha <= %s"
+        params.append(fecha_hasta)
+    
+    if total_min:
+        query += " AND v.total >= %s"
+        params.append(total_min)
+    
+    if total_max:
+        query += " AND v.total <= %s"
+        params.append(total_max)
+    
+    if cantidad_min:
+        query += " AND v.cantidad >= %s"
+        params.append(cantidad_min)
+    
+    query += " ORDER BY v.fecha DESC LIMIT %s"
+    params.append(limit)
+    
+    cursor.execute(query, params)
+    resultados = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    
+    return {
+        "total_resultados": len(resultados),
+        "limite_aplicado": limit,
+        "filtros_aplicados": {
+            k: v for k, v in locals().items() 
+            if k in ['usuario_id', 'producto', 'fecha_desde', 'fecha_hasta', 
+                     'total_min', 'total_max', 'cantidad_min'] and v is not None
+        },
+        "datos": resultados
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, port=8000)
+```
+Ejemplo 12: Operaciones Masivas
+
+Después del Ejemplo 11, agregar:
+```python
+
+### ejemplos/12_operaciones_masivas.py
+"""
+Ejemplo 12: Operaciones masivas con MySQL
+Inserción, actualización y eliminación en lote
+"""
+
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from typing import List, Dict, Any
+from pydantic import BaseModel, Field
+import mysql.connector
+from mysql.connector import Error
+from datetime import datetime
+
+app = FastAPI()
+
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'tu_password',
+    'database': 'api_exercises'
+}
+
+class ProductoMasivo(BaseModel):
+    nombre: str = Field(..., min_length=1)
+    precio: float = Field(..., gt=0)
+    stock: int = Field(0, ge=0)
+
+def get_db():
+    return mysql.connector.connect(**DB_CONFIG)
+
+@app.post("/productos/masivo", status_code=202)
+async def crear_productos_masivo(
+    productos: List[ProductoMasivo],
+    background_tasks: BackgroundTasks
+):
+    """Inserta múltiples productos en lote"""
+    
+    def bulk_insert():
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        query = "INSERT INTO productos (nombre, precio, stock) VALUES (%s, %s, %s)"
+        values = [(p.nombre, p.precio, p.stock) for p in productos]
+        
+        try:
+            cursor.executemany(query, values)
+            conn.commit()
+            insertados = cursor.rowcount
+            print(f"✅ {insertados} productos insertados masivamente")
+        except Error as e:
+            print(f"❌ Error en inserción masiva: {e}")
+            conn.rollback()
+        finally:
+            cursor.close()
+            conn.close()
+    
+    background_tasks.add_task(bulk_insert)
+    
+    return {
+        "message": f"Procesando {len(productos)} productos en segundo plano",
+        "cantidad": len(productos),
+        "status": "processing"
+    }
+
+@app.put("/productos/precios/masivo")
+def actualizar_precios_masivo(
+    incremento_porcentaje: float = Field(..., gt=0, le=100),
+    categoria: str = None
+):
+    """Actualiza precios masivamente"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    query = """
+        UPDATE productos 
+        SET precio = precio * (1 + %s / 100)
+    """
+    params = [incremento_porcentaje]
+    
+    if categoria:
+        query += " WHERE categoria = %s"
+        params.append(categoria)
+    
+    cursor.execute(query, params)
+    conn.commit()
+    actualizados = cursor.rowcount
+    
+    cursor.close()
+    conn.close()
+    
+    return {
+        "message": f"Precios actualizados exitosamente",
+        "productos_afectados": actualizados,
+        "incremento_aplicado": f"{incremento_porcentaje}%"
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, port=8000)
 ```
