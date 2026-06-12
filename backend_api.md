@@ -940,11 +940,11 @@ def get_db():
     return mysql.connector.connect(**DB_CONFIG)
 
 @app.on_event("startup")
-def init():
+def init_relations_and_seed():
     conn = get_db()
     cursor = conn.cursor()
     
-    # Crear tablas de ejemplo
+    # Crear tablas
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -966,7 +966,40 @@ def init():
         )
     """)
     
-    conn.commit()
+    # Insertar usuarios demo
+    cursor.execute("SELECT COUNT(*) FROM usuarios")
+    if cursor.fetchone()[0] == 0:
+        usuarios = [
+            ("Ana Torres", "ana@email.com"),
+            ("Luis Ramírez", "luis@email.com"),
+            ("Carmen Vega", "carmen@email.com")
+        ]
+        cursor.executemany(
+            "INSERT INTO usuarios (nombre, email) VALUES (%s, %s)",
+            usuarios
+        )
+        conn.commit()
+        
+        # Obtener IDs de usuarios insertados
+        cursor.execute("SELECT id FROM usuarios ORDER BY id")
+        usuarios_ids = [row[0] for row in cursor.fetchall()]
+        
+        # Insertar ventas relacionadas
+        ventas_demo = [
+            (usuarios_ids[0], "Laptop", 1, 800.00, 800.00),
+            (usuarios_ids[0], "Mouse", 2, 25.00, 50.00),
+            (usuarios_ids[1], "Teclado", 1, 60.00, 60.00),
+            (usuarios_ids[2], "Monitor", 1, 300.00, 300.00),
+            (usuarios_ids[0], "Disco SSD", 1, 150.00, 150.00),
+            (usuarios_ids[2], "Memoria RAM", 2, 45.00, 90.00)
+        ]
+        cursor.executemany("""
+            INSERT INTO ventas (usuario_id, producto, cantidad, precio_unitario, total)
+            VALUES (%s, %s, %s, %s, %s)
+        """, ventas_demo)
+        conn.commit()
+        print("✅ Datos relacionales insertados")
+    
     cursor.close()
     conn.close()
 
