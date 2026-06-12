@@ -374,7 +374,7 @@ app = FastAPI()
 DB_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'tu_password',
+    'password': 'Uno32345678',
     'database': 'api_exercises'
 }
 
@@ -387,7 +387,7 @@ def init_db():
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS usuarios (
+        CREATE TABLE IF NOT EXISTS usuarios2 (
             id INT AUTO_INCREMENT PRIMARY KEY,
             nombre VARCHAR(100),
             email VARCHAR(100)
@@ -401,18 +401,18 @@ def init_db():
 def get_usuarios():
     conn = get_db()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM usuarios")
+    cursor.execute("SELECT * FROM usuarios2")
     usuarios = cursor.fetchall()
     cursor.close()
     conn.close()
-    return {"usuarios": usuarios}
+    return {"usuarios2": usuarios}
 
 @app.post("/usuarios")
 def create_usuario(nombre: str, email: str):
     conn = get_db()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO usuarios (nombre, email) VALUES (%s, %s)",
+        "INSERT INTO usuarios2 (nombre, email) VALUES (%s, %s)",
         (nombre, email)
     )
     conn.commit()
@@ -425,7 +425,7 @@ def create_usuario(nombre: str, email: str):
 def get_usuario(id: int):
     conn = get_db()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM usuarios WHERE id = %s", (id,))
+    cursor.execute("SELECT * FROM usuarios2 WHERE id = %s", (id,))
     usuario = cursor.fetchone()
     cursor.close()
     conn.close()
