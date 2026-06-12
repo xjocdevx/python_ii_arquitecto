@@ -1330,6 +1330,69 @@ class FiltrosVenta(BaseModel):
     total_max: Optional[float] = None
     cantidad_min: Optional[int] = None
 
+@app.on_event("startup")
+def init_filters_data():
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Crear tablas necesarias
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ventas (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            usuario_id INT,
+            producto VARCHAR(100),
+            cantidad INT,
+            total DECIMAL(10,2),
+            fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(100)
+        )
+    """)
+    
+    # Insertar datos variados para pruebas de filtros
+    cursor.execute("SELECT COUNT(*) FROM ventas")
+    if cursor.fetchone()[0] == 0:
+        # Usuarios
+        usuarios = [(f"Usuario_{i}",) for i in range(1, 6)]
+        cursor.executemany("INSERT INTO usuarios (nombre) VALUES (%s)", usuarios)
+        conn.commit()
+        
+        # Ventas con diferentes fechas, cantidades y totales
+        from datetime import datetime, timedelta
+        ventas = []
+        base_date = datetime.now()
+        
+        for i in range(1, 51):
+            usuario_id = (i % 5) + 1
+            cantidad = (i % 10) + 1
+            precio_unitario = 50 + (i * 10)
+            total = cantidad * precio_unitario
+            
+            fecha = base_date - timedelta(days=i % 30)
+            
+            ventas.append((
+                usuario_id,
+                f"Producto_Filtro_{i}",
+                cantidad,
+                total,
+                fecha
+            ))
+        
+        cursor.executemany("""
+            INSERT INTO ventas (usuario_id, producto, cantidad, total, fecha)
+            VALUES (%s, %s, %s, %s, %s)
+        """, ventas)
+        conn.commit()
+        print("✅ 50 ventas generadas para pruebas de filtros")
+    
+    cursor.close()
+    conn.close()
+
 def get_db():
     return mysql.connector.connect(**DB_CONFIG)
 
@@ -1409,7 +1472,7 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
 ```
-Ejemplo 12: Operaciones Masivas
+### Ejemplo 12: Operaciones Masivas
 
 Después del Ejemplo 11, agregar:
 ```python
