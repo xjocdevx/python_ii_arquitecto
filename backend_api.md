@@ -218,7 +218,7 @@ class LoginRequest(BaseModel):
     password: str
 ```
 ### 📝 Ejemplos (1-20)
-ejemplos/01_hola_mundo.py
+### ejemplos/01_hola_mundo.py
 ```python
 """
 Ejemplo 1: Hola Mundo con FastAPI
@@ -244,65 +244,118 @@ if __name__ == "__main__":
 ### ejemplos/02_crud_basico.py
 ```python
 """
-Ejemplo 2: CRUD básico en memoria
+Ejemplo 2: CRUD básico con MySQL
 Endpoints: GET, POST, PUT, DELETE
+Lee configuración de .env y consume la tabla productos
+
+El 02_crud_basico.py no tiene definido un endpoint para la raíz (/). Las rutas disponibles son:
+- GET /productos — listar productos
+- POST /productos — crear producto
+- GET /productos/{id} — obtener producto
+- PUT /productos/{id} — actualizar producto
+- DELETE /productos/{id} — eliminar producto
+Solución: Accede a http://localhost:8000/productos en el navegador, o mejor aún, a la documentación interactiva en http://localhost:8000/docs.
 """
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from typing import List
+import mysql.connector
+from config import DB_CONFIG
 
 app = FastAPI()
 
-# Base de datos en memoria
-productos_db = []
-contador_id = 1
 
-class Producto(BaseModel):
-    id: int = None
-    nombre: str
-    precio: float
-    stock: int
+def get_db():
+    conn = mysql.connector.connect(**DB_CONFIG)
+    return conn
 
-@app.get("/productos", response_model=List[Producto])
+
+@app.get("/productos")
 def listar_productos():
-    return productos_db
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT id, nombre, precio, stock FROM productos")
+    productos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return productos
 
-@app.get("/productos/{id}", response_model=Producto)
+
+@app.get("/productos/{id}")
 def obtener_producto(id: int):
-    for p in productos_db:
-        if p.id == id:
-            return p
-    raise HTTPException(status_code=404, detail="Producto no encontrado")
-
-@app.post("/productos", response_model=Producto, status_code=201)
-def crear_producto(producto: Producto):
-    global contador_id
-    producto.id = contador_id
-    contador_id += 1
-    productos_db.append(producto)
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT id, nombre, precio, stock FROM productos WHERE id = %s", (id,)
+    )
+    producto = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
     return producto
 
-@app.put("/productos/{id}", response_model=Producto)
-def actualizar_producto(id: int, producto_actualizado: Producto):
-    for i, p in enumerate(productos_db):
-        if p.id == id:
-            producto_actualizado.id = id
-            productos_db[i] = producto_actualizado
-            return producto_actualizado
-    raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+@app.post("/productos", status_code=201)
+def crear_producto(nombre: str, precio: float, stock: int = 0):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO productos (nombre, precio, stock) VALUES (%s, %s, %s)",
+        (nombre, precio, stock),
+    )
+    conn.commit()
+    producto_id = cursor.lastrowid
+    cursor.close()
+    conn.close()
+    return {"id": producto_id, "nombre": nombre, "precio": precio, "stock": stock}
+
+
+@app.put("/productos/{id}")
+def actualizar_producto(id: int, nombre: str, precio: float, stock: int = 0):
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT id FROM productos WHERE id = %s", (id,)
+    )
+    producto = cursor.fetchone()
+    if not producto:
+        cursor.close()
+        conn.close()
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    cursor.execute(
+        "UPDATE productos SET nombre = %s, precio = %s, stock = %s WHERE id = %s",
+        (nombre, precio, stock, id),
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"id": id, "nombre": nombre, "precio": precio, "stock": stock}
+
 
 @app.delete("/productos/{id}")
 def eliminar_producto(id: int):
-    for i, p in enumerate(productos_db):
-        if p.id == id:
-            productos_db.pop(i)
-            return {"message": "Producto eliminado"}
-    raise HTTPException(status_code=404, detail="Producto no encontrado")
+    conn = get_db()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(
+        "SELECT id FROM productos WHERE id = %s", (id,)
+    )
+    producto = cursor.fetchone()
+    if not producto:
+        cursor.close()
+        conn.close()
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    cursor.execute("DELETE FROM productos WHERE id = %s", (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"message": "Producto eliminado"}
+
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
+
 ```
 ### ejemplos/03_con_db.py
 ```python
