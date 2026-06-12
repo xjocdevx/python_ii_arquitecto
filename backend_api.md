@@ -418,9 +418,11 @@ def get_db():
     return conn
 
 @app.on_event("startup")
-def init_db():
+def init_db_and_seed():
     conn = get_db()
     cursor = conn.cursor()
+    
+    # Crear tabla
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS usuarios2 (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -428,9 +430,26 @@ def init_db():
             email VARCHAR(100)
         )
     """)
-    conn.commit()
+    
+    # Insertar datos demo
+    cursor.execute("SELECT COUNT(*) FROM usuarios2")
+    if cursor.fetchone()[0] == 0:
+        usuarios_demo = [
+            ("Juan Pérez", "juan@email.com"),
+            ("María García", "maria@email.com"),
+            ("Carlos López", "carlos@email.com"),
+            ("Ana Martínez", "ana@email.com")
+        ]
+        cursor.executemany(
+            "INSERT INTO usuarios2 (nombre, email) VALUES (%s, %s)",
+            usuarios_demo
+        )
+        conn.commit()
+        print("✅ Usuarios demo insertados")
+    
     cursor.close()
     conn.close()
+
 
 @app.get("/usuarios")
 def get_usuarios():
