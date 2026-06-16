@@ -1,12 +1,12 @@
 Instalar dependencias
 
-´´´python
+```python
 pip install pytest
-´´´
+```
 
 Archivos de prueba separados (para pytest)
 test_parte4.py
-´´´python
+```python
 import pytest
 from parte4_codigo import es_par, calcular_descuento, promedio
 
@@ -33,7 +33,7 @@ def lista_numeros():
 def test_promedio(lista_numeros):
     assert promedio(lista_numeros) == 3.0
 
-´´´
+```
     test_desafio.py
 python
 import pytest
