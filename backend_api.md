@@ -1577,3 +1577,112 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, port=8000)
 ```
+### Ejemplo 13: Operaciones Masivas con POSTGRESQL
+
+Después del Ejemplo 13, agregar:
+```python
+### ejemplos/12_operaciones_masivas_postgres.py
+"""
+Ejemplo 12: Operaciones masivas con PostgreSQL
+Inserción, actualización y eliminación en lote
+"""
+
+from fastapi import FastAPI, HTTPException, BackgroundTasks
+from typing import List
+from pydantic import BaseModel, Field
+import psycopg2
+from psycopg2 import Error
+from datetime import datetime
+
+app = FastAPI()
+
+DB_CONFIG = {
+    'host': 'localhost',
+    'user': 'postgres',
+    'password': 'tu_password',
+    'dbname': 'api_exercises'
+}
+
+class ProductoMasivo(BaseModel):
+    nombre: str = Field(..., min_length=1)
+    precio: float = Field(..., gt=0)
+    stock: int = Field(0, ge=0)
+
+def get_db():
+    return psycopg2.connect(**DB_CONFIG)
+
+@app.post("/productos/masivo", status_code=202)
+async def crear_productos_masivo(
+    productos: List[ProductoMasivo],
+    background_tasks: BackgroundTasks
+):
+    """Inserta múltiples productos en lote"""
+    
+    def bulk_insert():
+        conn = get_db()
+        cursor = conn.cursor()
+        
+        query = "INSERT INTO productos (nombre, precio, stock) VALUES (%s, %s, %s)"
+        values = [(p.nombre, p.precio, p.stock) for p in productos]
+        
+        try:
+            cursor.executemany(query, values)
+            conn.commit()
+            insertados = cursor.rowcount
+            print(f"✅ {insertados} productos insertados masivamente")
+        except Error as e:
+            print(f"❌ Error en inserción masiva: {e}")
+            conn.rollback()
+        finally:
+            cursor.close()
+            conn.close()
+    
+    background_tasks.add_task(bulk_insert)
+    
+    return {
+        "message": f"Procesando {len(productos)} productos en segundo plano",
+        "cantidad": len(productos),
+        "status": "processing"
+    }
+
+@app.put("/productos/precios/masivo")
+def actualizar_precios_masivo(
+    incremento_porcentaje: float = Field(..., gt=0, le=100),
+    categoria: str = None
+):
+    """Actualiza precios masivamente"""
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    query = """
+        UPDATE productos 
+        SET precio = precio * (1 + %s / 100)
+    """
+    params = [incremento_porcentaje]
+    
+    if categoria:
+        query += " WHERE categoria = %s"
+        params.append(categoria)
+    
+    try:
+        cursor.execute(query, params)
+        conn.commit()
+        actualizados = cursor.rowcount
+    except Error as e:
+        print(f"❌ Error en actualización masiva: {e}")
+        conn.rollback()
+        raise HTTPException(status_code=500, detail="Error en actualización masiva")
+    finally:
+        cursor.close()
+        conn.close()
+    
+    return {
+        "message": f"Precios actualizados exitosamente",
+        "productos_afectados": actualizados,
+        "incremento_aplicado": f"{incremento_porcentaje}%"
+    }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, port=8000)
+```
